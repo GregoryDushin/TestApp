@@ -32,11 +32,4 @@ extension RocketModelElement {
         let kg: Int
         let lb: Int
     }
-
-// MARK: - PayloadWeight
-
-    struct PayloadWeight: Decodable, Equatable {
-        let kg: Int
-        let lb: Int
-    }
 }

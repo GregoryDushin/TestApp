@@ -32,7 +32,7 @@ final class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        presenter = RocketPresenter(rocketLoader: RocketLoader())
+        presenter = RocketPresenter(rocketLoader: RocketLoader(), realmManager: RealmManager())
         presenter.view = self
         presenter.getData()
         collectionView.collectionViewLayout = createLayout()
@@ -191,6 +191,7 @@ extension ViewController: RocketViewProtocol {
     
     func presentTableInfo(data: [RocketModelElement]) {
         DispatchQueue.main.async {
+            print(data)
             self.tableViewInfo = data
             self.tableView.reloadData()
         }
