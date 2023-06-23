@@ -43,11 +43,23 @@ extension RocketPresenter {
             }
        
         let sections = [
-            Section(sectionType: .horizontalPromo, title: nil, items: [
-                .horizontalPromoInfo(url: "https://st.depositphotos.com/1186248/4216/i/450/depositphotos_42167223-stock-photo-promo.jpg?forcejpeg=true"),
-                .horizontalPromoInfo(url: "https://st4.depositphotos.com/37826884/39042/i/600/depositphotos_390426256-stock-photo-mega-sale-concept-horizontal-banner.jpg?forcejpeg=true")]),
+            Section(
+                sectionType: .horizontalPromo,
+                items:
+                    [
+                        .horizontalPromoInfo(url: Url.promo1Url),
+                        .horizontalPromoInfo(url: Url.promo2Url)
+                    ]
+            ),
             
-            Section(sectionType: .horizontalButton, title: nil, items: [.horizontalButtonInfo(categorie: "one"), .horizontalButtonInfo(categorie: "two"), .horizontalButtonInfo(categorie: "three"), .horizontalButtonInfo(categorie: "four")])]
+            Section(
+                sectionType: .horizontalButton,
+                items:
+                    [
+                        .horizontalButtonInfo(categorie: "Falcon 1"), .horizontalButtonInfo(categorie: "Falcon 9"), .horizontalButtonInfo(categorie: "Falcon Heavy"), .horizontalButtonInfo(categorie: "Starship")
+                    ]
+            )
+        ]
         
         self.view?.presentSections(data: sections)
         

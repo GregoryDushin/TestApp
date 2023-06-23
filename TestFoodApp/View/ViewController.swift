@@ -2,7 +2,7 @@
 //  ViewController.swift
 //  TestFoodApp
 //
-//  Created by Григорий Душин on 22.06.2023.
+//  Created by Григорий Душин on 23.06.2023.
 //
 
 import UIKit
@@ -13,24 +13,35 @@ final class ViewController: UIViewController {
     typealias DataSourceSnapshot = NSDiffableDataSourceSnapshot<Section, ListItem>
     
     @IBOutlet private var collectionView: UICollectionView!
-    
     @IBOutlet private var tableView: UITableView!
     
     var presenter: RocketPresenterProtocol!
-    var tableViewInfo: [RocketModelElement] = []
-    
-    private lazy var dataSource = configureCollectionViewDataSource()
+    private var tableViewInfo: [RocketModelElement] = []
     private var snapshot = DataSourceSnapshot()
     private var visibleButtonIndexPaths = Set<IndexPath>()
+    private lazy var dataSource = configureCollectionViewDataSource()
+    
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        DispatchQueue.main.async {
+            self.updateButtonColors()
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let presenter = RocketPresenter(rocketLoader: RocketLoader())
+        presenter = RocketPresenter(rocketLoader: RocketLoader())
         presenter.view = self
-        self.presenter = presenter
         presenter.getData()
         collectionView.collectionViewLayout = createLayout()
-        configureHeader()
+        tableView.rowHeight = 550
+    }
+    
+    private func showAlert(_ error: String) {
+        let alert = UIAlertController(title: "Error", message: error, preferredStyle: .alert)
+        self.present(alert, animated: true)
     }
     
     // MARK: - Configure CollectionView DataSource
@@ -53,31 +64,17 @@ final class ViewController: UIViewController {
                         withReuseIdentifier: "CategoriesCell",
                         for: indexPath
                     ) as? CategoriesCell else { return UICollectionViewCell() }
-                    cell.setup(categorie: categorie)
+                    cell.setup(categorie: categorie, rowIndex: indexPath.row)
                     cell.buttonActionHandler = { [weak self] in
                         self?.scrollTableViewToRow(indexPath.row)
                     }
                     return cell
                 }
             }
-
+        
         return dataSource
     }
-    
-    private func configureHeader() {
-        dataSource.supplementaryViewProvider = { [weak self] collectionView, kind, indexPath -> UICollectionReusableView? in
-            guard let self = self,
-                  let header = collectionView.dequeueReusableSupplementaryView(
-                    ofKind: kind,
-                    withReuseIdentifier: "HeaderCell",
-                    for: indexPath
-                  ) as? HeaderCell else { return UICollectionReusableView() }
-            
-            header.setup(title: self.dataSource.snapshot().sectionIdentifiers[indexPath.section].title ?? "")
-            return header
-        }
-    }
-    
+        
     // MARK: - Creating sections using CompositionalLayout
     
     private func createLayout() -> UICollectionViewCompositionalLayout {
@@ -91,7 +88,7 @@ final class ViewController: UIViewController {
                     layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1))
                 )
                 let group = NSCollectionLayoutGroup.horizontal(
-                    layoutSize: .init(widthDimension: .absolute(300), heightDimension: .absolute(200)), subitems: [item]
+                    layoutSize: .init(widthDimension: .absolute(350), heightDimension: .absolute(180)), subitems: [item]
                 )
                 let section = NSCollectionLayoutSection(group: group)
                 section.orthogonalScrollingBehavior = .continuous
@@ -104,17 +101,40 @@ final class ViewController: UIViewController {
                     layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1))
                 )
                 let group = NSCollectionLayoutGroup.horizontal(
-                    layoutSize: .init(widthDimension: .absolute(150), heightDimension: .absolute(150)), subitems: [item]
+                    layoutSize: .init(widthDimension: .absolute(150), heightDimension: .absolute(90)), subitems: [item]
                 )
                 let section = NSCollectionLayoutSection(group: group)
                 section.orthogonalScrollingBehavior = .continuous
-                section.interGroupSpacing = 5
-                section.contentInsets = .init(top: 5, leading: 5, bottom: 5, trailing: 5)
+                section.interGroupSpacing = 3
+                section.contentInsets = .init(top: 3, leading: 3, bottom: 3, trailing: 3)
                 return section
             }
         }
     }
+ 
+    // MARK: - Creating buttons color change
     
+    private func updateButtonColors() {
+        guard let topIndexPath = tableView.indexPathsForVisibleRows?.first else {
+            return
+        }
+
+        collectionView.visibleCells.forEach { cell in
+            guard let categoriesCell = cell as? CategoriesCell else {
+                return
+            }
+
+            let buttonColor: UIColor
+            if categoriesCell.tag == topIndexPath.row {
+                buttonColor = .gray
+            } else {
+                buttonColor = .lightGray
+            }
+
+            categoriesCell.setButtonColor(buttonColor)
+        }
+    }
+
     // MARK: - Table view scrolling
     
     private func scrollTableViewToRow(_ row: Int) {
@@ -123,29 +143,49 @@ final class ViewController: UIViewController {
     }
 }
 
-extension ViewController: UITableViewDataSource {
+// MARK: - UITableViewDataSource & Delegate
+
+extension ViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return tableViewInfo.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(
-            withIdentifier: "TableViewProductCell"
-        ) as? TableViewProductCell else { return UITableViewCell() }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "TableViewProductCell") as? TableViewProductCell else {
+            return UITableViewCell()
+        }
         
         let rocket = tableViewInfo[indexPath.row]
-        cell.setup(url: rocket.flickrImages[0], name: rocket.name, description: rocket.id, price: String(rocket.costPerLaunch))
-        
+        cell.setup(
+            url: rocket.flickrImages[0],
+            name: rocket.name,
+            description: "Country: USA",
+            price: "LAST PRICE: " + String(rocket.costPerLaunch / 1000000) + " millions $ !",
+            height: "Height: " + String(rocket.height.meters!) + " m",
+            diameter: "Diameter: " + String(rocket.diameter.meters!) + " m",
+            weight: "Weight: " + String(rocket.mass.kg) + " kg"
+        )
+
         return cell
     }
+
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        guard scrollView == tableView else {
+            return
+        }
+        
+        updateButtonColors()
+    }
 }
+
+// MARK: - RocketViewProtocol
 
 extension ViewController: RocketViewProtocol {
     
     func failure(error: Error) {
         DispatchQueue.main.async {
-            print("Ошибка: \(error)")
+            self.showAlert(error.localizedDescription)
         }
     }
     
@@ -164,7 +204,7 @@ extension ViewController: RocketViewProtocol {
             snapshot.appendItems(section.items, toSection: section)
         }
         
+        self.snapshot = snapshot
         dataSource.apply(snapshot)
     }
 }
-

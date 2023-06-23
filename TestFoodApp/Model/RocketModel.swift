@@ -2,7 +2,7 @@
 //  RocketModel.swift
 //  TestFoodApp
 //
-//  Created by Григорий Душин on 22.06.2023.
+//  Created by Григорий Душин on 23.06.2023.
 //
 
 import Foundation
@@ -13,15 +13,9 @@ struct RocketModelElement: Decodable, Equatable {
     let height: Diameter
     let diameter: Diameter
     let mass: Mass
-    let firstStage: FirstStage
-    let secondStage: SecondStage
-    let payloadWeights: [PayloadWeight]
     let flickrImages: [String]
     let name: String
-    let stages: Int
     let costPerLaunch: Int
-    let firstFlight: String
-    let id: String
 }
 
 // MARK: - Diameter
@@ -30,14 +24,6 @@ extension RocketModelElement {
     struct Diameter: Decodable, Equatable {
         let meters: Double?
         let feet: Double?
-    }
-
-// MARK: - FirstStage
-
-    struct FirstStage: Decodable, Equatable {
-        let engines: Int
-        let fuelAmountTons: Double
-        let burnTimeSec: Int?
     }
 
 // MARK: - Mass
@@ -52,13 +38,5 @@ extension RocketModelElement {
     struct PayloadWeight: Decodable, Equatable {
         let kg: Int
         let lb: Int
-    }
-
-// MARK: - SecondStage
-
-    struct SecondStage: Decodable, Equatable {
-        let engines: Int
-        let fuelAmountTons: Double
-        let burnTimeSec: Int?
     }
 }

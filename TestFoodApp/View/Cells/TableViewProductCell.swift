@@ -13,11 +13,17 @@ final class TableViewProductCell: UITableViewCell {
     @IBOutlet private var nameProduct: UILabel!
     @IBOutlet private var descriptionProductLabel: UILabel!
     @IBOutlet private var priceProductLabel: UILabel!
+    @IBOutlet private var heightLabel: UILabel!
+    @IBOutlet private var diameterLabel: UILabel!
+    @IBOutlet private var massLabel: UILabel!
     
-    func setup (url: String, name: String, description: String, price: String) {
+    func setup (url: String, name: String, description: String, price: String, height: String, diameter: String, weight: String) {
         productImage.af.setImage(withURL: URL(string: url)!)
         nameProduct.text = name
         descriptionProductLabel.text = description
         priceProductLabel.text = price
+        heightLabel.text = height
+        diameterLabel.text = diameter
+        massLabel.text = weight
     }
 }

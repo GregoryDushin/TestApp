@@ -2,7 +2,7 @@
 //  SceneDelegate.swift
 //  TestFoodApp
 //
-//  Created by Григорий Душин on 22.06.2023.
+//  Created by Григорий Душин on 23.06.2023.
 //
 
 import UIKit

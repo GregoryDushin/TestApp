@@ -2,7 +2,7 @@
 //  RocketLoader.swift
 //  SpaceX
 //
-//  Created by Григорий Душин on 06.10.2022.
+//  Created by Григорий Душин on 23.06.2023.
 //
 
 import Foundation
