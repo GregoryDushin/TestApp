@@ -8,4 +8,5 @@ target 'TestFoodApp' do
   # Pods for TestFoodApp
 pod 'AlamofireImage', '~> 4.1'
 pod 'RealmSwift'
+ pod 'SwiftLint'
 end

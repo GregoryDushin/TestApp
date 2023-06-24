@@ -7,8 +7,6 @@
 
 import RealmSwift
 
-import RealmSwift
-
 class RocketObject: Object {
     @objc dynamic var height: DiameterObject?
     @objc dynamic var diameter: DiameterObject?

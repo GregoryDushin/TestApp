@@ -22,12 +22,12 @@ final class RocketPresenter: RocketPresenterProtocol {
     weak var view: RocketViewProtocol?
     private let rocketLoader: RocketLoaderProtocol
     let realmManager: RealmManagerProtocol
-    
+
     init(rocketLoader: RocketLoaderProtocol, realmManager: RealmManagerProtocol) {
         self.rocketLoader = rocketLoader
         self.realmManager = realmManager
     }
-    
+
     func getData() {
         self.rocketLoader.rocketDataLoad { [weak self] result in
             guard let self = self else { return }
@@ -47,7 +47,7 @@ final class RocketPresenter: RocketPresenterProtocol {
                 self.view?.failure(error: error)
             }
         }
-            
+
             let sections = [
                 Section(
                     sectionType: .horizontalPromo,
@@ -66,7 +66,7 @@ final class RocketPresenter: RocketPresenterProtocol {
                     ]
                 )
             ]
-            
+
             self.view?.presentSections(data: sections)
     }
 }

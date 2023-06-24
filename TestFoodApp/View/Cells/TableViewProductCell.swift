@@ -16,9 +16,19 @@ final class TableViewProductCell: UITableViewCell {
     @IBOutlet private var heightLabel: UILabel!
     @IBOutlet private var diameterLabel: UILabel!
     @IBOutlet private var massLabel: UILabel!
-    
-    func setup (url: String, name: String, description: String, price: String, height: String, diameter: String, weight: String) {
-        productImage.af.setImage(withURL: URL(string: url)!)
+
+    func setup (
+        url: String,
+        name: String,
+        description: String,
+        price: String,
+        height: String,
+        diameter: String,
+        weight: String
+    ) {
+        if let imageURL = URL(string: url) {
+            productImage.af.setImage(withURL: imageURL)
+        }
         nameProduct.text = name
         descriptionProductLabel.text = description
         priceProductLabel.text = price

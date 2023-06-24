@@ -75,14 +75,21 @@ class RealmManager: RealmManagerProtocol {
         let flickrImages = Array(rocketObject.flickrImages)
         let name = rocketObject.name
         let costPerLaunch = rocketObject.costPerLaunch
-        return RocketModelElement(height: height, diameter: diameter, mass: mass, flickrImages: flickrImages, name: name, costPerLaunch: costPerLaunch)
+        return RocketModelElement(
+            height: height,
+            diameter: diameter,
+            mass: mass,
+            flickrImages: flickrImages,
+            name: name,
+            costPerLaunch: costPerLaunch
+        )
     }
 
     private func createDiameter(from diameterObject: DiameterObject?) -> RocketModelElement.Diameter {
-        return RocketModelElement.Diameter(meters: diameterObject?.meters, feet: diameterObject?.feet)
+         RocketModelElement.Diameter(meters: diameterObject?.meters, feet: diameterObject?.feet)
     }
 
     private func createMass(from massObject: MassObject?) -> RocketModelElement.Mass {
-        return RocketModelElement.Mass(kg: massObject?.kg ?? 0, lb: massObject?.lb ?? 0)
+        RocketModelElement.Mass(kg: massObject?.kg ?? 0, lb: massObject?.lb ?? 0)
     }
 }

@@ -5,14 +5,16 @@
 //  Created by Григорий Душин on 23.06.2023.
 //
 
-import UIKit
 import AlamofireImage
+import UIKit
 
 final class PromotionsCell: UICollectionViewCell {
 
     @IBOutlet private var promotionImage: UIImageView!
-    
+
     func setup(url: String) {
-        promotionImage.af.setImage(withURL: URL(string: url)!)
+        if let imageURL = URL(string: url) {
+            promotionImage.af.setImage(withURL: imageURL)
+        }
     }
 }
