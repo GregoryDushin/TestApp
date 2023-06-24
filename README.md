@@ -11,7 +11,7 @@
  * 
  
 ## Preview
-
+<img src= "https://github.com/GregoryDushin/TestApp/blob/main/testAppScreen1.png" width="400">
 ## Interactive visuality
 
 ## Технологии
