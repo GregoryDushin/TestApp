@@ -24,7 +24,7 @@
 ## Технологии
 
 * UIKit
-* MVP design pattern
+* MVP
 * Alamofire
 * Realm
 * Multithreading with GCD
